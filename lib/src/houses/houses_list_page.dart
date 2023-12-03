@@ -1,29 +1,59 @@
 import 'package:flutter/material.dart';
+import 'package:scutum_test_assignment/src/houses/houses_service.dart';
 
 import 'house.dart';
-import 'floors_list_page.dart';
+import '../floors/floors_list_page.dart';
 
 /// Displays a list of Houses.
-class HousesListPage extends StatelessWidget {
+class HousesListPage extends StatefulWidget {
   const HousesListPage({
     super.key,
-    this.items = const [
-      House(1, 'first'),
-      House(2, 'second'),
-      House(3, 'third')
-    ], //mock data
   });
 
   static const routeName = '/houses';
 
-  final List<House> items;
+  @override
+  State<HousesListPage> createState() => _HousesListPageState();
+}
+
+class _HousesListPageState extends State<HousesListPage> {
+  final _housesService = HousesService();
+
+  final _nameFieldController = TextEditingController();
+  final _floorsFieldController = TextEditingController();
+
+  List<House>? items;
+
+  @override
+  void initState() {
+    _housesService.getHouses().then((value) => setState(() {
+          items = value;
+        }));
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: TextButton(
-          onPressed: () => {},
+          onPressed: () async {
+            await showDialog<void>(
+                context: context,
+                builder: (context) => AddHousePopup(
+                      nameFieldController: _nameFieldController,
+                      floorsFieldController: _floorsFieldController,
+                      onPressed: () async {
+                        var newHouse = House(_nameFieldController.text,
+                            int.tryParse(_floorsFieldController.text) ?? 0);
+
+                        await _housesService.addHouse(newHouse);
+                        setState(() {
+                          items!.add(newHouse);
+                        });
+                      },
+                    ));
+          },
           child: const Text('Add house'),
         ),
       ),
@@ -39,9 +69,9 @@ class HousesListPage extends StatelessWidget {
         // scroll position when a user leaves and returns to the app after it
         // has been killed while running in the background.
         restorationId: 'housesListView',
-        itemCount: items.length,
+        itemCount: items == null ? 0 : items!.length,
         itemBuilder: (BuildContext context, int index) {
-          final item = items[index];
+          final item = items![index];
 
           return ListTile(
               title: Text(item.name),
@@ -56,6 +86,71 @@ class HousesListPage extends StatelessWidget {
                 );
               });
         },
+      ),
+    );
+  }
+}
+
+class AddHousePopup extends StatelessWidget {
+  const AddHousePopup({
+    super.key,
+    required TextEditingController nameFieldController,
+    required TextEditingController floorsFieldController,
+    required void Function() onPressed,
+  })  : _nameFieldController = nameFieldController,
+        _floorsFieldController = floorsFieldController,
+        _onPressed = onPressed;
+
+  final TextEditingController _nameFieldController;
+  final TextEditingController _floorsFieldController;
+  final void Function() _onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      content: Stack(
+        clipBehavior: Clip.none,
+        children: <Widget>[
+          Positioned(
+            right: -40,
+            top: -40,
+            child: InkResponse(
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+              child: const CircleAvatar(
+                backgroundColor: Colors.red,
+                child: Icon(Icons.close),
+              ),
+            ),
+          ),
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(8),
+                child: TextFormField(
+                  controller: _nameFieldController,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8),
+                child: TextFormField(
+                  controller: _floorsFieldController,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8),
+                child: ElevatedButton(
+                    onPressed: () {
+                      _onPressed();
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text('Add')),
+              )
+            ],
+          ),
+        ],
       ),
     );
   }
