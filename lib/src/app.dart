@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:path/path.dart';
+import 'package:scutum_test_assignment/src/houses/house.dart';
 import 'package:sqflite/sqflite.dart';
 
 import 'floors/floors_list_page.dart';
@@ -47,7 +48,7 @@ class MyApp extends StatelessWidget {
       // Define a light and dark color theme. Then, read the user's
       // preferred ThemeMode (light, dark, or system default) from the
       // SettingsController to display the correct theme.
-      theme: ThemeData(scaffoldBackgroundColor: const Color.fromARGB(255, 200, 200, 200)),
+      theme: ThemeData(colorScheme: const ColorScheme.light(primary: Colors.black), scaffoldBackgroundColor: const Color.fromARGB(255, 200, 200, 200)),
       darkTheme: ThemeData.dark(),
       themeMode: ThemeMode.system,
 
@@ -60,8 +61,8 @@ class MyApp extends StatelessWidget {
             switch (routeSettings.name) {
               case EntrancePage.routeName:
                 return const EntrancePage();
-              case FloorsListPage.routeName:
-                return const FloorsListPage();
+              // case FloorsListPage.routeName:
+              //   return FloorsListPage();
               case HousesListPage.routeName:
               default:
                 return const HousesListPage();

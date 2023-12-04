@@ -64,6 +64,7 @@ class _HousesListPageState extends State<HousesListPage> {
                             borderRadius: BorderRadius.circular(12)))),
                 onPressed: () async {
                   await showDialog<void>(
+                      barrierColor: Colors.transparent,
                       context: context,
                       builder: (context) => AddHousePopup(
                             nameFieldController: _nameFieldController,
@@ -84,7 +85,9 @@ class _HousesListPageState extends State<HousesListPage> {
                 child: const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Spacer(flex: 3,),
+                    Spacer(
+                      flex: 3,
+                    ),
                     Text(
                       'Add house',
                       style: TextStyle(
@@ -129,9 +132,9 @@ class _HousesListPageState extends State<HousesListPage> {
                     // Navigate to the floors page. If the user leaves and returns to
                     // the app after it has been killed while running in the
                     // background, the navigation stack is restored.
-                    Navigator.restorablePushNamed(
+                    Navigator.push(
                       context,
-                      FloorsListPage.routeName,
+                      MaterialPageRoute<void>(builder: (context) => FloorsListPage(house: item))
                     );
                   }),
             );
@@ -158,50 +161,105 @@ class AddHousePopup extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      content: Stack(
-        clipBehavior: Clip.none,
-        children: <Widget>[
-          Positioned(
-            right: -40,
-            top: -40,
-            child: InkResponse(
-              onTap: () {
-                Navigator.of(context).pop();
-              },
-              child: const CircleAvatar(
-                backgroundColor: Colors.red,
-                child: Icon(Icons.close),
-              ),
+    return Dialog(
+      insetPadding: const EdgeInsets.symmetric(horizontal: 20),
+      backgroundColor: const Color.fromARGB(255, 210, 210, 210),
+      shape: const ContinuousRectangleBorder(
+        side: BorderSide(color: Colors.black, width: 1),
+        borderRadius: BorderRadius.zero,
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+        child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+          SizedBox(
+            height: 50,
+            child: Stack(
+              children: [
+                const Positioned(
+                  top: 10,
+                    left: 0,
+                    right: 0,
+                    child: Text(
+                      'Add house',
+                      textAlign: TextAlign.center,
+                    )),
+                Positioned(
+                  right: 0,
+                  top: 0,
+                  child: IconButton(
+                    padding: EdgeInsets.zero,
+                    visualDensity: const VisualDensity(
+                      horizontal: VisualDensity.minimumDensity,
+                      vertical: VisualDensity.minimumDensity,
+                    ),
+                    onPressed: () => Navigator.of(context).pop(),
+                    icon: const Icon(Icons.close),
+                  ),
+                )
+              ],
             ),
           ),
-          Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(8),
-                child: TextFormField(
-                  controller: _nameFieldController,
+          Row(
+            children: [
+              const Expanded(child: Text('Name')),
+              Expanded(
+                  child: TextField(
+                      controller: _nameFieldController,
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        filled: true,
+                        fillColor: Colors.white,
+                        isDense: true,
+                        contentPadding:
+                            EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+                      ))),
+            ],
+          ),
+          const SizedBox(height: 20),
+          Row(
+            children: [
+              const Expanded(child: Text('Floors count')),
+              Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SizedBox(
+                      width: 50,
+                      child: TextField(
+                          controller: _floorsFieldController,
+                          decoration: const InputDecoration(
+                            border: InputBorder.none,
+                            filled: true,
+                            fillColor: Colors.white,
+                            isDense: true,
+                            contentPadding: EdgeInsets.symmetric(
+                                horizontal: 0, vertical: 0),
+                          )),
+                    ),
+                    const SizedBox()
+                  ],
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8),
-                child: TextFormField(
-                  controller: _floorsFieldController,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8),
-                child: ElevatedButton(
-                    onPressed: () {
-                      _onPressed();
-                      Navigator.of(context).pop();
-                    },
-                    child: const Text('Add')),
               )
             ],
           ),
-        ],
+          const SizedBox(height: 20),
+          Align(
+            alignment: Alignment.centerRight,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color.fromARGB(255, 210, 210, 210),
+                  minimumSize: const Size(120, 30),
+                  shape: const RoundedRectangleBorder(
+                      side: BorderSide(color: Colors.black),
+                      borderRadius: BorderRadius.all(Radius.circular(15)))),
+              onPressed: () {
+                _onPressed();
+                Navigator.of(context).pop();
+              },
+              child: const Text('Add'),
+            ),
+          )
+        ]),
       ),
     );
   }
