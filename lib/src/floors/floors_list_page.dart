@@ -5,15 +5,16 @@ import '../houses/house.dart';
 
 /// Displays list of floors of a specific house.
 class FloorsListPage extends StatelessWidget {
-  FloorsListPage({super.key, required this.house});
+  const FloorsListPage({super.key, required this.house});
 
   static const routeName = '/floors';
 
   final House house;
-  late FloorsController controller = FloorsController(house);
 
   @override
   Widget build(BuildContext context) {
+    var controller = FloorsController(house);
+
     return Scaffold(
       body: Column(
         children: [

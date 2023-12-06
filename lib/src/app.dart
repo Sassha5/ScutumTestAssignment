@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:path/path.dart';
-import 'package:scutum_test_assignment/src/houses/house.dart';
 import 'package:sqflite/sqflite.dart';
 
-import 'floors/floors_list_page.dart';
 import 'houses/houses_list_page.dart';
 import 'entrance_page.dart';
 
@@ -76,9 +74,6 @@ class MyApp extends StatelessWidget {
   static Future<Database> dbFuture = _initDB();
 
   static Future<Database> _initDB() async {
-    // Avoid errors caused by flutter upgrade.
-    // Importing 'package:flutter/widgets.dart' is required.
-    WidgetsFlutterBinding.ensureInitialized();
     // Open the database and store the reference.
     return openDatabase(
       // Set the path to the database. Note: Using the `join` function from the
