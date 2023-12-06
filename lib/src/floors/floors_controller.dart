@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:scutum_test_assignment/src/houses/house.dart';
 
+/// Controllers glue Data Services to Flutter Widgets.
+/// The FloorsController holds house state and manages notifications
 class FloorsController with ChangeNotifier {
   FloorsController(this.house);
 
@@ -21,7 +23,7 @@ class FloorsController with ChangeNotifier {
       _isMoving = true;
       var direction = currentFloor < targetFloor ? 1 : -1;
 
-      while (currentFloor != targetFloor) {
+      while (currentFloor != targetFloor) { //Move lift gradually 1 floor per second instead of teleporting
         notifyListeners();
         _currentFloor += direction;
 
@@ -50,9 +52,9 @@ class FloorsController with ChangeNotifier {
 
     var message = 'Current floor is ${currentFloor + 1}';
 
-    await notificationsPlugin.show(0, house.name, message, notificationDetails);
+    await notificationsPlugin.show(0, house.name, message, notificationDetails); //Show notification when the lift arrives right away
 
-    await notificationsPlugin.periodicallyShow(
+    await notificationsPlugin.periodicallyShow( //Schedule notification to show later
         0, house.name, message, RepeatInterval.everyMinute, notificationDetails,
         androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle);
   }

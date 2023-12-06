@@ -13,6 +13,7 @@ class FloorsListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //Create controller for this house
     var controller = FloorsController(house);
 
     return Scaffold(
@@ -36,7 +37,7 @@ class FloorsListPage extends StatelessWidget {
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 60.0),
-              child: house.floors == 0
+              child: house.floors == 0 //Display placeholder if there are no floors
                   ? const Padding(
                     padding: EdgeInsets.all(20),
                     child: Text('This house has no floors'),
@@ -55,7 +56,7 @@ class FloorsListPage extends StatelessWidget {
           Align(
               alignment: Alignment.bottomRight,
               child: GestureDetector(
-                onTap: () async => await controller.cancelNotification(),
+                onTap: () async => await controller.cancelNotification(), //tap to cancel notification
                 child: const Padding(
                   padding: EdgeInsets.all(16),
                   child: Text('designed by Sassha5'),

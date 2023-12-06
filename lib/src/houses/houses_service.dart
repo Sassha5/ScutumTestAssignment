@@ -19,6 +19,7 @@ class HousesService {
   }
 
   Future<List<House>> getHouses() async {
+    // Make sure that db instance is ready
     var db = await MyApp.dbFuture;
     // Query the table for all The Houses.
     final List<Map<String, dynamic>> maps = await db.query(housesTableName);

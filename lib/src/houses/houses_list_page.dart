@@ -26,6 +26,7 @@ class _HousesListPageState extends State<HousesListPage> {
 
   @override
   void initState() {
+    //Loading house list when the page is opened
     _housesService.getHouses().then((value) => setState(() {
           items = value;
         }));
@@ -48,21 +49,11 @@ class _HousesListPageState extends State<HousesListPage> {
           // scroll position when a user leaves and returns to the app after it
           // has been killed while running in the background.
           restorationId: 'housesListView',
-          itemCount: items == null ? 0 : items!.length + 1,
+          itemCount: items == null ? 0 : items!.length + 1, //if any items in the list then add one to insert header
           itemBuilder: (BuildContext context, int index) {
             if (index == 0) {
               // return the header
-              return OutlinedButton(
-                style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(Colors.white),
-                    minimumSize:
-                        MaterialStateProperty.all<Size>(const Size(220, 40)),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                            side:
-                                const BorderSide(color: Colors.black, width: 3),
-                            borderRadius: BorderRadius.circular(12)))),
-                onPressed: () async {
+              return AddHouseButton(onPressed: () async {
                   await showDialog<void>(
                       barrierColor: Colors.transparent,
                       context: context,
@@ -73,40 +64,15 @@ class _HousesListPageState extends State<HousesListPage> {
                               var newHouse = House(
                                   _nameFieldController.text,
                                   int.tryParse(_floorsFieldController.text) ??
-                                      0);
+                                      0); //default floors to 0 if correct value was not provided
 
-                              await _housesService.addHouse(newHouse);
-                              setState(() {
-                                items!.add(newHouse);
-                              });
+                              await _housesService.addHouse(newHouse); //add house to db
+                              setState(() => items!.add(newHouse)); //add house to layout
                             },
                           ));
-                },
-                child: const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Spacer(
-                      flex: 3,
-                    ),
-                    Text(
-                      'Add house',
-                      style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.black,
-                          fontWeight: FontWeight.normal),
-                    ),
-                    Spacer(),
-                    Icon(
-                      Icons.add,
-                      size: 32,
-                      color: Colors.black,
-                    ),
-                    Spacer(),
-                  ],
-                ),
-              );
+                });
             }
-            index -= 1;
+            index -= 1; 
 
             final item = items![index];
 
@@ -115,7 +81,7 @@ class _HousesListPageState extends State<HousesListPage> {
               child: ListTile(
                   dense: true,
                   contentPadding:
-                      const EdgeInsets.symmetric(vertical: 0, horizontal: 5),
+                      const EdgeInsets.symmetric(vertical: 0, horizontal: 5), //reduce default padding
                   shape: RoundedRectangleBorder(
                     side: const BorderSide(color: Colors.black, width: 2),
                     borderRadius: BorderRadius.circular(12),
@@ -140,6 +106,52 @@ class _HousesListPageState extends State<HousesListPage> {
             );
           },
         ),
+      ),
+    );
+  }
+}
+
+class AddHouseButton extends StatelessWidget {
+  const AddHouseButton({
+    super.key, required this.onPressed,
+  });
+
+  final Future Function() onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return OutlinedButton(
+      style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all(Colors.white),
+          minimumSize:
+              MaterialStateProperty.all<Size>(const Size(220, 40)),
+          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+              RoundedRectangleBorder(
+                  side:
+                      const BorderSide(color: Colors.black, width: 3),
+                  borderRadius: BorderRadius.circular(12)))),
+      onPressed: onPressed,
+      child: const Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Spacer(
+            flex: 3,
+          ),
+          Text(
+            'Add house',
+            style: TextStyle(
+                fontSize: 16,
+                color: Colors.black,
+                fontWeight: FontWeight.normal),
+          ),
+          Spacer(),
+          Icon(
+            Icons.add,
+            size: 32,
+            color: Colors.black,
+          ),
+          Spacer(),
+        ],
       ),
     );
   }

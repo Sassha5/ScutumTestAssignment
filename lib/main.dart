@@ -8,15 +8,17 @@ void main() async {
   // Importing 'package:flutter/widgets.dart' is required.
   WidgetsFlutterBinding.ensureInitialized();
 
+  //Get plugin instance
   var flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
+  //Initialize the notifications
   await flutterLocalNotificationsPlugin.initialize(
     InitializationSettings(
         iOS: initializationSettingsDarwin,
         android: const AndroidInitializationSettings('mipmap/ic_launcher')),
     onDidReceiveNotificationResponse:
         (NotificationResponse notificationResponse) async {
-      // ...
+      //Action on notification tap in foreground to be added
     },
     onDidReceiveBackgroundNotificationResponse: notificationTapBackground,
   );
@@ -24,7 +26,7 @@ void main() async {
   final AndroidFlutterLocalNotificationsPlugin? androidImplementation =
       flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<
           AndroidFlutterLocalNotificationsPlugin>();
-
+  //Request Android specific permissions for notifications to work correctly
   await androidImplementation?.requestNotificationsPermission();
 
   runApp(const MyApp());
@@ -32,12 +34,12 @@ void main() async {
 
 @pragma('vm:entry-point')
 void notificationTapBackground(NotificationResponse notificationResponse) {
-  // handle action
+  //Action to be added
 }
 
+//iOS placeholder notification settings
 final DarwinInitializationSettings initializationSettingsDarwin =
     DarwinInitializationSettings(
-  // ...
   notificationCategories: [
     DarwinNotificationCategory(
       'demoCategory',

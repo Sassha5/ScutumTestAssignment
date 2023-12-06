@@ -26,7 +26,7 @@ class EntrancePage extends StatelessWidget {
               width: 200,
               decoration: BoxDecoration(
                 border: Border.all(
-                  color: const Color.fromARGB(255, 255, 0, 0),
+                  color: Colors.red,
                   width: 2,
                 ),
               ),
@@ -42,8 +42,7 @@ class EntrancePage extends StatelessWidget {
                           borderRadius: BorderRadius.circular(12)))),
               child: const Text(
                 'Enter',
-                style: TextStyle(
-                    color: Colors.black, fontWeight: FontWeight.normal),
+                style: TextStyle(fontWeight: FontWeight.normal),
               ),
               onPressed: () {
                 Navigator.pushReplacementNamed(

@@ -59,8 +59,6 @@ class MyApp extends StatelessWidget {
             switch (routeSettings.name) {
               case EntrancePage.routeName:
                 return const EntrancePage();
-              // case FloorsListPage.routeName:
-              //   return FloorsListPage();
               case HousesListPage.routeName:
               default:
                 return const HousesListPage();
@@ -71,6 +69,7 @@ class MyApp extends StatelessWidget {
     );
   }
 
+  //Public db instance. In bigger apps should be placed in a separate service
   static Future<Database> dbFuture = _initDB();
 
   static Future<Database> _initDB() async {
