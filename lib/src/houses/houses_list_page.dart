@@ -188,6 +188,7 @@ class AddHousePopup extends StatelessWidget {
                   top: 0,
                   child: IconButton(
                     padding: EdgeInsets.zero,
+                    constraints: const BoxConstraints(),
                     visualDensity: const VisualDensity(
                       horizontal: VisualDensity.minimumDensity,
                       vertical: VisualDensity.minimumDensity,
