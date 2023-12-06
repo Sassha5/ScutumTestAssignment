@@ -18,11 +18,8 @@ class FloorsListPage extends StatelessWidget {
     return Scaffold(
       body: Column(
         children: [
-          const SizedBox(
-            height: 80,
-          ),
           const Padding(
-            padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 40),
+            padding: EdgeInsets.only(top: 90, left: 40),
             child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
@@ -39,16 +36,32 @@ class FloorsListPage extends StatelessWidget {
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 60.0),
-              child: ListenableBuilder(
-                listenable: controller,
-                builder: (context, data) => ListView.builder(
-                    itemCount: house.floors,
-                    itemBuilder: (context, index) {
-                      return FloorWidget(index: index, controller: controller);
-                    }),
-              ),
+              child: house.floors == 0
+                  ? const Padding(
+                    padding: EdgeInsets.all(20),
+                    child: Text('This house has no floors'),
+                  )
+                  : ListenableBuilder(
+                      listenable: controller,
+                      builder: (context, data) => ListView.builder(
+                          itemCount: house.floors,
+                          itemBuilder: (context, index) {
+                            return FloorWidget(
+                                index: index, controller: controller);
+                          }),
+                    ),
             ),
           ),
+          Align(
+              alignment: Alignment.bottomRight,
+              child: GestureDetector(
+                onTap: () async => await controller.cancelNotification(),
+                child: const Padding(
+                  padding: EdgeInsets.all(16),
+                  child: Text('designed by Sassha5'),
+                ),
+              ),
+            )
         ],
       ),
     );

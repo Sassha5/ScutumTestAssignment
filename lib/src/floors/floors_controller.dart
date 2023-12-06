@@ -6,7 +6,7 @@ class FloorsController with ChangeNotifier {
   FloorsController(this.house);
 
   final House house;
-  final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  final notificationsPlugin = FlutterLocalNotificationsPlugin();
 
   int _currentFloor = 0;
   int get currentFloor => _currentFloor;
@@ -34,17 +34,26 @@ class FloorsController with ChangeNotifier {
     }
   }
 
+  Future<void> cancelNotification() async {
+    await notificationsPlugin.cancel(0);
+  }
+
   Future<void> _showNotification() async {
     const AndroidNotificationDetails androidNotificationDetails =
-        AndroidNotificationDetails('your channel id', 'your channel name',
-            channelDescription: 'your channel description',
+        AndroidNotificationDetails('channel id', 'channel name',
+            channelDescription: 'channel description',
             importance: Importance.max,
             priority: Priority.high,
             ticker: 'ticker');
     const NotificationDetails notificationDetails =
         NotificationDetails(android: androidNotificationDetails);
-    await flutterLocalNotificationsPlugin.show(
-        0, 'plain title', 'plain body', notificationDetails,
-        payload: 'item x');
+
+    var message = 'Current floor is ${currentFloor + 1}';
+
+    await notificationsPlugin.show(0, house.name, message, notificationDetails);
+
+    await notificationsPlugin.periodicallyShow(
+        0, house.name, message, RepeatInterval.everyMinute, notificationDetails,
+        androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle);
   }
 }
