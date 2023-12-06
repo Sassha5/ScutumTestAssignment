@@ -1,30 +1,34 @@
 # scutum_test_assignment
 
-A new Flutter project.
+Setup Project:
 
-## Getting Started
+Initialize a Flutter project.
+Design Implementation:
 
-This project is a starting point for a Flutter application that follows the
-[simple app state management
-tutorial](https://flutter.dev/docs/development/data-and-backend/state-mgmt/simple).
+Implement screens according to the provided design: https://www.figma.com/file/3b1hEkkrFN03FAMdMF7Skb/Test-for-Flutter?type=design&node-id=0-1&mode=design&t=7mWGBo7ZFvqOeIqS-0.
 
-For help getting started with Flutter development, view the
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+SQLite Database:
 
-## Assets
+Create SQLite tables for buildings and the number of floors.
+MethodChannel Integration:
 
-The `assets` directory houses images, fonts, and any other files you want to
-include with your application.
+Utilize MethodChannel for communication between Flutter and the native part.
+Background Notification Logic:
 
-The `assets/images` directory contains [resolution-aware
-images](https://flutter.dev/docs/development/ui/assets-and-images#resolution-aware).
+Implement background notification logic:
+Send a notification every minute indicating the current floor of the elevator in the last selected building in the application.
+Project Submission:
 
-## Localization
+Share the results of the assignment by providing a link to the public Git repository.
+Documentation:
 
-This project generates localized messages based on arb files found in
-the `lib/src/localization` directory.
+Prepare documentation for the project.
+Submission Instructions:
 
-To support additional languages, please visit the tutorial on
-[Internationalizing Flutter
-apps](https://flutter.dev/docs/development/accessibility-and-localization/internationalization)
+The completed assignment should be submitted through a public Git repository.
+Include comprehensive documentation.
+Note: Make sure to follow the design closely, implement the SQLite tables, integrate MethodChannel for communication, and implement the background notification logic as specified.
+
+Requested design:
+![Alt text](image.png)
+![Alt text](image-1.png)
